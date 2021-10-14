@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_order_inherit_view_training" model="ir.ui.view">
+            <field name="name">purchase.order.inherit.view.training</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_qty']" position="attributes">
+                    <attribute name="attrs">
+                        {'invisible': [('product_qty', '>', 20)]}
+                    </attribute>
+                </xpath>
+                <field name="partner_id" position="after">
+                    <field name="ci_product"/>
+                </field>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position = "replace">
+                    <field name="product_id"
+                           attrs="{
+                                            'readonly': [('state', 'in', ('purchase', 'to approve','done', 'cancel'))],
+                                            'required': [('display_type', '=', False)],
+                                        }"
+                           context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}"
+                           force_save="1" domain="[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id),('ci_product','=',parent.ci_product),('type','=','product'),('standard_price','>',500)]"/>
+
+                </xpath>
+            </field>
+        </record>
+        <record id="product_customer_action_view" model="ir.actions.act_window">
+            <field name="name">Product for customer</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('partner_id.is_company', '=', False)]</field>
+        </record>
+        <record id="product_company_action_view" model="ir.actions.act_window">
+            <field name="name">Product for company</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('partner_id.is_company', '=', True)]</field>
+
+        </record>
+
+        <menuitem
+                id="product_customer_child_menu"
+                action="product_customer_action_view"
+                parent="purchase.menu_product_in_config_purchase"
+                name="Product for individual"
+                sequence="0"/>
+        <menuitem
+                id="product_company_child_menu"
+                action="product_company_action_view"
+                parent="purchase.menu_product_in_config_purchase"
+                name="Product for company"
+                sequence="0"/>
+    </data>
+</odoo>

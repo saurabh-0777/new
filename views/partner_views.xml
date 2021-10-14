@@ -1,0 +1,12 @@
+<odoo>
+        <record id="account_move_inherit_view_training" model="ir.ui.view">
+            <field name="name">account.move.inherit.view.training</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id]" position="before">
+                    <field name="domain" attrs ="[('company_type', '=', 'company')]"/>
+                </xpath>
+            </field>
+        </record>
+</odoo>

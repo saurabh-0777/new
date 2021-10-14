@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <record id="gym_info_form_view" model="ir.ui.view">
+            <field name="name">gym.info.form.view</field>
+            <field name="model">gym.info</field>
+            <field name="arch" type="xml">
+                <form string="GYM">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="middle_name"/>
+                            <field name="mobile"/>
+                            <field name="city"/>
+                            <field name="gender_male" widget="radio"/>
+                            <field name="is_pwd"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="gym_info_tree_view" model="ir.ui.view">
+            <field name="name">gym.info.tree.view</field>
+            <field name="model">gym.info</field>
+            <field name="arch" type="xml">
+                <tree string="Tags">
+                    <field name="name"/>
+                    <field name="mobile"/>
+                    <field name="gender_male"/>
+                    <field name="is_pwd"/>
+                </tree>
+            </field>
+        </record>
+        <record id="gym_action_view" model="ir.actions.act_window">
+            <field name="name">GYM Info</field>
+            <field name="res_model">gym.info</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_gym_record_main" name="gym"/>
+
+        <menuitem id="gym_info_child_menu"
+                  action="gym_erp.gym_action_view"
+                  parent="gym_erp.menu_gym_record_main"
+                  name="GYM Info"
+        />
+    </data>
+</odoo>
